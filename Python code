@@ -1,0 +1,46 @@
+1)create list of 100 random numbers from 0 to 1000
+  import random
+
+# Generate a list of unique random numbers
+n = 100  # Number of random numbers
+random_numbers = random.sample(range(1, 1000), n)
+
+print(random_numbers)
+
+2)sort list from min to max (without using sort())
+# Python program to print a list without using the sort() function
+
+a = [10, 23, 100, 128, 54, 50]
+print("Original List:", a)
+
+# sorting list using nested loops
+for i in range(0, len(a)):
+    for j in range(i + 1, len(a)):
+        if a[i] >= a[j]:
+            a[i], a[j] = a[j], a[i]
+
+# sorted list
+print("Sorted List", a)
+
+3)calculate average for even and odd numbers print both average result in console 
+
+import random
+
+# Generate a list of unique random numbers
+n = 100  # Number of random numbers
+random_numbers = random.sample(range(1, 1000), n)
+
+print(random_numbers)
+
+# Separate even and odd numbers
+even_numbers = [num for num in random_numbers if num % 2 == 0]
+odd_numbers = [num for num in random_numbers if num % 2 != 0]
+
+# Calculate the averages
+average_even = sum(even_numbers) / len(even_numbers) if even_numbers else 0
+average_odd = sum(odd_numbers) / len(odd_numbers) if odd_numbers else 0
+
+# Print the results
+print(f"Average of Even Numbers: {average_even}")
+print(f"Average of Odd Numbers: {average_odd}")
+
