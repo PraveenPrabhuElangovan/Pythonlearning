@@ -1,0 +1,47 @@
+import random
+import string
+
+# Step 1: Create a list of random number of dictionaries (from 2 to 10)
+def gen_random_dict():
+    num_keys = random.randint(1, 5)  # Random number of keys per dictionary (between 1 and 5)
+    random_dict = {random.choice(string.ascii_lowercase): random.randint(0, 100) for _ in range(num_keys)}
+    return random_dict
+
+# Generate a list with random number of dictionaries (between 2 and 10)
+random_list = [gen_random_dict() for _ in range(random.randint(2, 10))]
+
+# Print the randomly generated list of dictionaries
+print(f"Random list of dicts: {random_list}")
+
+# Step 2: Combine the dictionaries into one common dictionary
+def combine_dicts(dicts):
+    common_dict = {}  # Initialize an empty dictionary to store the final result
+
+    # Loop through each dictionary in the list
+    for idx, d in enumerate(dicts):
+        # Loop through each key-value pair in the current dictionary
+        for key, value in d.items():
+            # If the key is already in the common dictionary, compare the values
+            if key in common_dict:
+                # If the current value is larger, update the key with the max value and the dictionary number
+                if value > common_dict[key][0]:
+                    common_dict[key] = (value, idx + 1)  # Store value and dictionary number (1-indexed)
+            else:
+                # If the key is not in common_dict, just add it
+                common_dict[key] = (value, idx + 1)  # Store value and dictionary number (1-indexed)
+
+    # Now create the final dictionary with the required key renaming
+    final_dict = {}
+    for key, (value, dict_num) in common_dict.items():
+        if dict_num > 1:  # If the key appeared in multiple dictionaries, append the dictionary number
+            final_dict[f"{key}_{dict_num}"] = value
+        else:
+            final_dict[key] = value  # Keep the key as is if it appeared only once
+
+    return final_dict  # Return the combined dictionary
+
+# Combine the list of dictionaries into one
+final_combined_dict = combine_dicts(random_list)
+
+# Print the final combined dictionary
+print(f"Final combined dict: {final_combined_dict}")
