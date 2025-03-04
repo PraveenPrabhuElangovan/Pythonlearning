@@ -9,18 +9,16 @@ print(random_numbers)
 
 2)sort list from min to max (without using sort())
 # Python program to print a list without using the sort() function
-
-a = [10, 23, 100, 128, 54, 50]
-print("Original List:", a)
+print("Original List:", random_numbers)
 
 # sorting list using nested loops
-for i in range(0, len(a)):
-    for j in range(i + 1, len(a)):
-        if a[i] >= a[j]:
-            a[i], a[j] = a[j], a[i]
+for i in range(0, len(random_numbers)):
+    for j in range(i + 1, len(random_numbers)):
+        if random_numbers[i] >= random_numbers[j]:
+            random_numbers[i], random_numbers[j] = random_numbers[j], random_numbers[i]
 
 # sorted list
-print("Sorted List", a)
+print("Sorted List", random_numbers)
 
 3)calculate average for even and odd numbers print both average result in console 
 
