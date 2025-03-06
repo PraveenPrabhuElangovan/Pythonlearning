@@ -41,7 +41,7 @@ def combine_dicts(dicts):
     return final_dict  # Return the combined dictionary
 
 # Combine the list of dictionaries into one
-final_combined_dict = combine_dicts(random_list)
+final_combined_dict = sorted(combine_dicts(random_list))
 
 # Print the final combined dictionary
 print(f"Final combined dict: {final_combined_dict}")
