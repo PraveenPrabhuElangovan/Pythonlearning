@@ -28,11 +28,11 @@ def combine_dicts(dicts):
                     common_dict[key] = (value, idx + 1)  # Store value and dictionary number (1-indexed)
             else:
                 # If the key is not in common_dict, just add it
-                common_dict[key] = (value, idx)  # Store value and dictionary number (1-indexed)
+                common_dict[key] = (value, idx + 1)  # Store value and dictionary number (1-indexed)
 
     # Now create the final dictionary with the required key renaming
     final_dict = {}
-    for key, (value, dict_num) in common_dict.items():
+    for key, (value, dict_num) in sorted(common_dict.items()):
         if dict_num > 1:  # If the key appeared in multiple dictionaries, append the dictionary number
             final_dict[f"{key}_{dict_num}"] = value
         else:
@@ -41,7 +41,7 @@ def combine_dicts(dicts):
     return final_dict  # Return the combined dictionary
 
 # Combine the list of dictionaries into one
-final_combined_dict = sorted(combine_dicts(random_list))
+final_combined_dict = combine_dicts(random_list)
 
 # Print the final combined dictionary
 print(f"Final combined dict: {final_combined_dict}")
