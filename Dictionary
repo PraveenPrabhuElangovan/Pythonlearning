@@ -33,7 +33,7 @@ def combine_dicts(dicts):
     # Now create the final dictionary with the required key renaming
     final_dict = {}
     for key, (value, dict_num) in sorted(common_dict.items()):
-        if dict_num > 1:  # If the key appeared in multiple dictionaries, append the dictionary number
+        if sum(1 for d in dicts if key in d) > 1:  # Check if key appeared in more than one dictionary
             final_dict[f"{key}_{dict_num}"] = value
         else:
             final_dict[key] = value  # Keep the key as is if it appeared only once
