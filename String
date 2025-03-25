@@ -1,0 +1,47 @@
+import re
+
+# Original text
+text = """
+tHis iz your homeWork, copy these Text to variable.
+You NEED TO normalize it fROM letter CASEs point oF View. also, create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
+it iZ misspeLLing here. fix“iZ” with correct “is”, but ONLY when it Iz a mistAKE.
+last iz TO calculate nuMber OF Whitespace characteRS in this Tex. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
+"""
+
+# Step 1: Normalize text from letter cases (convert everything to lowercase)
+normalized_text = text.lower()
+
+
+# Step 2: Correct only the incorrect "iz" instances outside of quotes
+def correct_iz_outside_quotes(text):
+    # Step 2.1: Split the text into parts - those inside quotes and those outside
+    # This pattern captures both quoted text and non-quoted text
+    parts = re.split(r'(["“”][^“”]*["”])', text)
+
+    # Step 2.2: Iterate through each part
+    for i, part in enumerate(parts):
+        if not (part.startswith('"') or part.startswith('“')):  # If it's not inside quotes
+            parts[i] = re.sub(r'\biz\b', 'is', part)  # Correct "iz" to "is" (only outside quotes)
+
+    # Step 2.3: Rejoin the parts
+    return ''.join(parts)
+
+
+# Correct the text outside quotes
+corrected_text = correct_iz_outside_quotes(normalized_text)
+
+# Step 3: Create one more sentence with the last words of each existing sentence
+sentences = corrected_text.split('.')
+last_words = [sentence.strip().split()[-1] for sentence in sentences if sentence.strip()]
+new_sentence = ' '.join(last_words)
+
+# Add the new sentence to the end of the text
+corrected_text += f"\n\n{new_sentence}."
+
+# Step 4: Count the number of whitespace characters (spaces, tabs, and newlines)
+whitespace_count = sum(1 for char in corrected_text if char.isspace())
+
+# Print the final results
+print("Normalized and Corrected Text:\n")
+print(corrected_text)
+print("\nWhitespace character count:", whitespace_count)
