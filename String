@@ -1,47 +1,94 @@
 import re
 
-# Original text
-text = """
-tHis iz your homeWork, copy these Text to variable.
-You NEED TO normalize it fROM letter CASEs point oF View. also, create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
-it iZ misspeLLing here. fix“iZ” with correct “is”, but ONLY when it Iz a mistAKE.
-last iz TO calculate nuMber OF Whitespace characteRS in this Tex. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
-"""
 
 # Step 1: Normalize text from letter cases (convert everything to lowercase)
-normalized_text = text.lower()
+def normalize_text(text):
+    """Normalize the entire text by converting it to lowercase."""
+    return text.lower()
 
 
-# Step 2: Correct only the incorrect "iz" instances outside of quotes
-def correct_iz_outside_quotes(text):
-    # Step 2.1: Split the text into parts - those inside quotes and those outside
-    # This pattern captures both quoted text and non-quoted text
-    parts = re.split(r'(["“”][^“”]*["”])', text)
+# Step 2: Split the text into parts inside and outside quotes
+def split_text_by_quotes(text):
+    """Split text into parts that are inside and outside quotes."""
+    return re.split(r'(["“”][^“”]*["”])', text)
 
-    # Step 2.2: Iterate through each part
+
+# Step 3: Correct "iz" to "is" outside quotes
+def correct_iz_outside_quotes(parts):
+    """Correct instances of 'iz' to 'is' only outside quotes."""
     for i, part in enumerate(parts):
-        if not (part.startswith('"') or part.startswith('“')):  # If it's not inside quotes
-            parts[i] = re.sub(r'\biz\b', 'is', part)  # Correct "iz" to "is" (only outside quotes)
-
-    # Step 2.3: Rejoin the parts
+        if not (part.startswith('"') or part.startswith('“')):  # Not inside quotes
+            parts[i] = re.sub(r'\biz\b', 'is', part)
     return ''.join(parts)
 
 
-# Correct the text outside quotes
-corrected_text = correct_iz_outside_quotes(normalized_text)
+# Step 4: Extract last words from each sentence
+def extract_last_words_from_sentences(text):
+    """Extract the last word from each sentence."""
+    sentences = text.split('.')
+    return [sentence.strip().split()[-1] for sentence in sentences if sentence.strip()]
 
-# Step 3: Create one more sentence with the last words of each existing sentence
-sentences = corrected_text.split('.')
-last_words = [sentence.strip().split()[-1] for sentence in sentences if sentence.strip()]
-new_sentence = ' '.join(last_words)
 
-# Add the new sentence to the end of the text
-corrected_text += f"\n\n{new_sentence}."
+# Step 5: Count whitespace characters (spaces, tabs, newlines)
+def count_whitespace(text):
+    """Count all whitespace characters in the text."""
+    return sum(1 for char in text if char.isspace())
 
-# Step 4: Count the number of whitespace characters (spaces, tabs, and newlines)
-whitespace_count = sum(1 for char in corrected_text if char.isspace())
 
-# Print the final results
+# Step 6: Capitalize each sentence in the text
+def capitalize_sentences(text):
+    """Capitalize the first letter of each sentence in the text."""
+    sentences = text.split('.')
+    capitalized_sentences = [sentence.strip().capitalize() for sentence in sentences if sentence.strip()]
+    return '. '.join(capitalized_sentences) + '.'  # Add a period at the end
+
+
+# Step 7: Combine the corrected text with the new sentence
+def append_new_sentence(corrected_text, new_sentence):
+    """Append a new sentence formed by the last words of each sentence, capitalizing it."""
+    # Capitalize the first letter of the new sentence
+    new_sentence = new_sentence.capitalize()
+    return f"{corrected_text}\n\n{new_sentence}."
+
+
+# Main function to process the text
+def process_text(text):
+    """Process the text: normalize, correct, extract last words, count whitespace, capitalize sentences, and append new sentence."""
+    # Step 1: Normalize the text
+    normalized_text = normalize_text(text)
+
+    # Step 2: Correct "iz" outside quotes
+    split_parts = split_text_by_quotes(normalized_text)
+    corrected_text = correct_iz_outside_quotes(split_parts)
+
+    # Step 3: Extract last words and create a new sentence
+    last_words = extract_last_words_from_sentences(corrected_text)
+    new_sentence = ' '.join(last_words)
+
+    # Step 4: Capitalize all sentences
+    corrected_text = capitalize_sentences(corrected_text)
+
+    # Step 5: Append the new sentence to the corrected text
+    final_text = append_new_sentence(corrected_text, new_sentence)
+
+    # Step 6: Count whitespace characters
+    whitespace_count = count_whitespace(final_text)
+
+    return final_text, whitespace_count
+
+
+# Original text
+text = """
+tHis iz your homeWork, copy these Text to variable.
+You NEED TO normalize it fROM letter CASEs point oF View. also , create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
+it iZ misspeLLing here. fix “iZ” with correct “is”, but ONLY when it Iz a mistAKE.
+last iz TO calculate nuMber OF Whitespace characteRS in this Tex. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
+"""
+
+# Process the text
+final_text, whitespace_count = process_text(text)
+
+# Output the result
 print("Normalized and Corrected Text:\n")
-print(corrected_text)
+print(final_text)
 print("\nWhitespace character count:", whitespace_count)
