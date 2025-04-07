@@ -1,0 +1,74 @@
+#Module 2:
+import random
+import string
+from collections import defaultdict
+
+# Step 1: Generate a random key
+def generate_random_key():
+    """Generate a random lowercase letter as a key."""
+    return random.choice(string.ascii_lowercase)
+
+# Step 2: Generate a random value (between 0 and 100)
+def generate_random_value():
+    """Generate a random integer between 0 and 100."""
+    return random.randint(0, 100)
+
+# Step 3: Create a random dictionary with 1 to 5 keys
+def gen_random_dict():
+    """Generate a random dictionary with a random number of keys."""
+    num_keys = random.randint(1, 5)  # Random number of keys per dictionary
+    return {generate_random_key(): generate_random_value() for _ in range(num_keys)}
+
+# Step 4: Generate a list of random dictionaries
+def generate_random_list_of_dicts():
+    """Generate a list with a random number of dictionaries (between 2 and 10)."""
+    num_dicts = random.randint(2, 10)
+    return [gen_random_dict() for _ in range(num_dicts)]
+
+# Step 5: Update the common dictionary with a key-value pair
+def update_common_dict(generate_random_list_of_dicts, key, value, dict_num):
+    """Helper function to update the common dictionary with a key-value pair."""
+    if key in generate_random_list_of_dicts:
+        # If key exists, store the max value and the dictionary number
+        if value > generate_random_list_of_dicts[key][0]:
+            generate_random_list_of_dicts[key] = (value, dict_num)
+    else:
+        # Add new key-value pair if the key doesn't exist
+        generate_random_list_of_dicts[key] = (value, dict_num)
+
+# Step 6: Merge multiple dictionaries into one common dictionary
+def merge_dicts(dicts):
+    """Merge a list of dictionaries into a common dictionary."""
+    common_dict = {}
+    for idx, current_dict in enumerate(dicts):
+        for key, value in current_dict.items():
+            update_common_dict(common_dict, key, value, idx + 1)
+    return common_dict
+
+# Step 7: Rename keys in the common dictionary if they appear in multiple dictionaries
+def rename_keys_for_common_entries(common_dict, dicts):
+    """Rename the keys if they appeared in more than one dictionary."""
+    final_dict = {}
+    for key, (value, dict_num) in sorted(common_dict.items()):
+        if sum(1 for d in dicts if key in d) > 1:
+            # If key appeared in multiple dictionaries, rename it
+            final_dict[f"{key}_{dict_num}"] = value
+        else:
+            final_dict[key] = value
+    return final_dict
+
+# Step 8: Combine all steps into one function
+def generate_combined_dict():
+    """Generate and return the combined dictionary."""
+    random_list = generate_random_list_of_dicts()  # Generate the list of random dictionaries
+    print(f"random list of dict: {random_list}")
+    common_dict = merge_dicts(random_list)  # Merge them into one common dictionary
+    return rename_keys_for_common_entries(common_dict, random_list)  # Rename keys if necessary
+
+# Generate and print the final combined dictionary
+final_combined_dict = generate_combined_dict()
+
+print(f"Final combined dict: {final_combined_dict}")
+
+#Module 3:
+
